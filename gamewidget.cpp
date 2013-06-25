@@ -12,7 +12,8 @@
 GameWidget::GameWidget(QWidget *parent) :
     QWidget(parent),
     timer(new QTimer(this)),
-    universeSize(50)
+    universeSize(50),
+    cameraMode(false)
 {
     timer->setInterval(300);
     m_masterColor[0] = "#000";
@@ -131,16 +132,24 @@ void GameWidget::paintEvent(QPaintEvent *)
 
 void GameWidget::mousePressEvent(QMouseEvent *e)
 {
-    double cellWidth = (double)width()/universeSize;
-    double cellHeight = (double)height()/universeSize;
-    int x = floor(e->x()/cellWidth) + 1;
-    int y = floor(e->y()/cellHeight) + 1;
-    if(cellGrid.isAlive(x, y))
-        cellGrid.removeCell(x, y);
-    else
-        cellGrid.addCell(x, y);
+    if(e->buttons() == Qt::LeftButton)
+    {
+        double cellWidth = (double)width()/universeSize;
+        double cellHeight = (double)height()/universeSize;
+        int x = floor(e->x()/cellWidth) + 1;
+        int y = floor(e->y()/cellHeight) + 1;
+        if(cellGrid.isAlive(x, y))
+            cellGrid.removeCell(x, y);
+        else
+            cellGrid.addCell(x, y);
+        update();
+    }
 
-    update();
+    if(e->buttons() == Qt::RightButton)
+    {
+        cameraMode = true;
+        mousePos = edge + e->pos();
+    }
 }
 
 void GameWidget::mouseMoveEvent(QMouseEvent *e)
@@ -169,8 +178,14 @@ void GameWidget::mouseMoveEvent(QMouseEvent *e)
 
     if(e->buttons() == Qt::RightButton)
     {
-
+        edge = - e->pos() + mousePos;
+        update();
     }
+}
+
+void GameWidget::mouseReleaseEvent(QMouseEvent *e)
+{
+    cameraMode = false;
 }
 
 void GameWidget::wheelEvent(QWheelEvent *e)
@@ -185,11 +200,11 @@ void GameWidget::paintGrid(QPainter &p)
     gridColor.setAlpha(50); // must be lighter than main color
     p.setPen(gridColor);
     double cellWidth = (double)width()/universeSize; // width of the widget / number of cells at one row
-    for(double y = cellWidth; y <= width(); y += cellWidth)
-        p.drawLine(y, 0, y, height());
+    for(double x = cellWidth; x <= width(); x += cellWidth)
+        p.drawLine(x + edge.x(), 0, x + edge.x(), height());
     double cellHeight = (double)height()/universeSize; // height of the widget / number of cells at one row
-    for(double x = cellHeight; x <= height(); x += cellHeight)
-        p.drawLine(0, x, width(), x);
+    for(double y = cellHeight; y <= height(); y += cellHeight)
+        p.drawLine(0, y + edge.y(), width(), y + edge.y());
     p.drawRect(borders);
 }
 
@@ -201,7 +216,7 @@ void GameWidget::paintUniverse(QPainter &p)
     { // if there is any sense to paint it
         qreal left = (qreal)(cellWidth*cell.x() - cellWidth); // margin from left
         qreal top  = (qreal)(cellHeight*cell.y() - cellHeight); // margin from top
-        QRectF r(left, top, (qreal)cellWidth, (qreal)cellHeight);
+        QRectF r(left + edge.x(), top + edge.y(), (qreal)cellWidth, (qreal)cellHeight);
         p.fillRect(r, QBrush(m_masterColor[0])); // fill cell with brush of main color
     }
 }

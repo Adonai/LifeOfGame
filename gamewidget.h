@@ -18,6 +18,7 @@ protected:
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
     void wheelEvent(QWheelEvent *e);
     
 signals:
@@ -39,11 +40,14 @@ private slots:
 
 private:
     QColor m_masterColor[9];
-    QPoint edge;
     QTimer* timer;
     GameGrid cellGrid;
     GameGrid cellGridNext;
     int universeSize;
+
+    QPoint edge, mousePos;
+    bool cameraMode;
+
     quint8 checkPoint(quint32 x, quint32 y);
     void processPart(quint32 start, quint32 end);
 };
