@@ -136,8 +136,8 @@ void GameWidget::mousePressEvent(QMouseEvent *e)
     {
         double cellWidth = (double)width()/universeSize;
         double cellHeight = (double)height()/universeSize;
-        int x = floor(e->x()/cellWidth) + 1;
-        int y = floor(e->y()/cellHeight) + 1;
+        int x = floor((e->x() - edge.x())/cellWidth) + 1;
+        int y = floor((e->y() - edge.x())/cellHeight) + 1;
         if(cellGrid.isAlive(x, y))
             cellGrid.removeCell(x, y);
         else
@@ -148,7 +148,7 @@ void GameWidget::mousePressEvent(QMouseEvent *e)
     if(e->buttons() == Qt::RightButton)
     {
         cameraMode = true;
-        mousePos = edge + e->pos();
+        mousePos = e->pos() - edge;
     }
 }
 
@@ -163,8 +163,8 @@ void GameWidget::mouseMoveEvent(QMouseEvent *e)
     {
         double cellWidth = (double)width()/universeSize;
         double cellHeight = (double)height()/universeSize;
-        int x = floor(e->x()/cellWidth) + 1;
-        int y = floor(e->y()/cellHeight) + 1;
+        int x = floor((e->x() - edge.x())/cellWidth) + 1;
+        int y = floor((e->y() - edge.y())/cellHeight) + 1;
         if(lastCoords != qMakePair(x, y))
         {
             if(cellGrid.isAlive(x, y))
@@ -178,7 +178,7 @@ void GameWidget::mouseMoveEvent(QMouseEvent *e)
 
     if(e->buttons() == Qt::RightButton)
     {
-        edge = - e->pos() + mousePos;
+        edge = e->pos() - mousePos;
         update();
     }
 }
@@ -200,10 +200,10 @@ void GameWidget::paintGrid(QPainter &p)
     gridColor.setAlpha(50); // must be lighter than main color
     p.setPen(gridColor);
     double cellWidth = (double)width()/universeSize; // width of the widget / number of cells at one row
-    for(double x = cellWidth; x <= width(); x += cellWidth)
+    for(double x = cellWidth; x + edge.x() <= width(); x += cellWidth)
         p.drawLine(x + edge.x(), 0, x + edge.x(), height());
     double cellHeight = (double)height()/universeSize; // height of the widget / number of cells at one row
-    for(double y = cellHeight; y <= height(); y += cellHeight)
+    for(double y = cellHeight; y + edge.y() <= height(); y += cellHeight)
         p.drawLine(0, y + edge.y(), width(), y + edge.y());
     p.drawRect(borders);
 }
