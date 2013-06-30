@@ -2,17 +2,16 @@
 #define GAMEWIDGET_H
 
 #include <QColor>
-#include <QWidget>
+#include <QtOpenGL/QGLWidget>
 #include <QThreadPool>
 
 #include "gamegrid.h"
 
-class GameWidget : public QWidget
+class GameWidget : public QGLWidget
 {
     Q_OBJECT
 public:
     explicit GameWidget(QWidget *parent = 0);
-    ~GameWidget();
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -20,7 +19,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
     void wheelEvent(QWheelEvent *e);
-    
+
 signals:
     
 public slots:
@@ -41,9 +40,10 @@ private slots:
 private:
     QColor m_masterColor[9];
     QTimer* timer;
+    int universeSize;
+
     GameGrid cellGrid;
     GameGrid cellGridNext;
-    int universeSize;
 
     QPoint edge, mousePos;
     bool cameraMode;

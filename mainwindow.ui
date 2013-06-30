@@ -20,8 +20,8 @@
    <string>Conway's Game of Life</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
      <layout class="QHBoxLayout" name="mainLayout">
       <item>
        <layout class="QVBoxLayout" name="gameLayout"/>
@@ -163,7 +163,7 @@
              </size>
             </property>
             <property name="text">
-             <string>10</string>
+             <string>100</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -177,6 +177,39 @@
           <property name="text">
            <string>Select color for cells</string>
           </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTabWidget" name="tabWidget">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <widget class="QWidget" name="elements">
+           <attribute name="title">
+            <string>Elements</string>
+           </attribute>
+           <widget class="QPushButton" name="addGlider">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>87</width>
+              <height>28</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Glider</string>
+            </property>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="tab">
+           <attribute name="title">
+            <string>Страница</string>
+           </attribute>
+          </widget>
          </widget>
         </item>
         <item>

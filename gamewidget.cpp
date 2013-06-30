@@ -10,9 +10,11 @@
 #include "gamewidget.h"
 
 GameWidget::GameWidget(QWidget *parent) :
-    QWidget(parent),
+    QGLWidget(parent),
     timer(new QTimer(this)),
     universeSize(50),
+    cellGrid(this),
+    cellGridNext(this),
     cameraMode(false)
 {
     timer->setInterval(300);
@@ -27,10 +29,6 @@ GameWidget::GameWidget(QWidget *parent) :
     m_masterColor[8] = "#009";
 
     connect(timer, SIGNAL(timeout()), this, SLOT(newGeneration()));
-}
-
-GameWidget::~GameWidget()
-{
 }
 
 void GameWidget::startGame()
@@ -82,7 +80,7 @@ quint8 GameWidget::checkPoint(quint32 x, quint32 y)
 
 void GameWidget::newGeneration()
 {
-    qint64 current = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    //qint64 current = QDateTime::currentDateTime().toMSecsSinceEpoch();
     const QList<GameCell> cells = cellGrid.getCells();
     qreal perThreadCount = cells.size() / (float) QThread::idealThreadCount();
 
@@ -99,7 +97,7 @@ void GameWidget::newGeneration()
     syncer.waitForFinished();
 
     cellGrid = cellGridNext;
-    qDebug() << QDateTime::currentDateTime().toMSecsSinceEpoch() - current << "  " << cellGrid.getCells().size();
+    //qDebug() << QDateTime::currentDateTime().toMSecsSinceEpoch() - current << "  " << cellGrid.getCells().size();
     update();
 }
 
@@ -125,9 +123,11 @@ void GameWidget::processPart(quint32 start, quint32 end)
 
 void GameWidget::paintEvent(QPaintEvent *)
 {
+    qint64 current = QDateTime::currentDateTime().toMSecsSinceEpoch();
     QPainter p(this);
     paintGrid(p);
     paintUniverse(p);
+    qDebug() << QDateTime::currentDateTime().toMSecsSinceEpoch() - current;
 }
 
 void GameWidget::mousePressEvent(QMouseEvent *e)
@@ -137,7 +137,7 @@ void GameWidget::mousePressEvent(QMouseEvent *e)
         double cellWidth = (double)width()/universeSize;
         double cellHeight = (double)height()/universeSize;
         int x = floor((e->x() - edge.x())/cellWidth) + 1;
-        int y = floor((e->y() - edge.x())/cellHeight) + 1;
+        int y = floor((e->y() - edge.y())/cellHeight) + 1;
         if(cellGrid.isAlive(x, y))
             cellGrid.removeCell(x, y);
         else
@@ -183,12 +183,12 @@ void GameWidget::mouseMoveEvent(QMouseEvent *e)
     }
 }
 
-void GameWidget::mouseReleaseEvent(QMouseEvent *e)
+void GameWidget::mouseReleaseEvent(QMouseEvent *)
 {
     cameraMode = false;
 }
 
-void GameWidget::wheelEvent(QWheelEvent *e)
+void GameWidget::wheelEvent(QWheelEvent *)
 {
 
 }

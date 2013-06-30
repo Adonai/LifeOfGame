@@ -2,7 +2,7 @@
 
 #include "gamegrid.h"
 
-GameGrid::GameGrid()
+GameGrid::GameGrid(GameWidget *parent) : painter(parent)
 {
     mutex = new QMutex;
     memset(gridPoints, 0, sizeof(gridPoints));

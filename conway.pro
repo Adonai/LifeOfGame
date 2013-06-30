@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui opengl
 CONFIG += C++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -17,12 +17,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     gamewidget.cpp \
     gamecell.cpp \
-    gamegrid.cpp
+    gamegrid.cpp \
+    celltemplateobject.cpp
 
 HEADERS  += mainwindow.h \
     gamewidget.h \
     gamecell.h \
-    gamegrid.h
+    gamegrid.h \
+    celltemplateobject.h
 
 FORMS    += mainwindow.ui
 
