@@ -2,7 +2,7 @@
 
 #include "gamegrid.h"
 
-GameGrid::GameGrid(GameWidget *parent) : painter(parent)
+GameGrid::GameGrid()
 {
     mutex = new QMutex;
     memset(gridPoints, 0, sizeof(gridPoints));
@@ -15,7 +15,7 @@ GameGrid::~GameGrid()
 
 // hmm does it look thread-safe?
 // NO :(
-void GameGrid::addCell(quint32 x, quint32 y, Team team)
+void GameGrid::addCell(int x, int y, Team team)
 {
     if(isAlive(x, y))
         return;
@@ -26,7 +26,7 @@ void GameGrid::addCell(quint32 x, quint32 y, Team team)
     mutex->unlock();
 }
 
-void GameGrid::removeCell(quint32 x, quint32 y)
+void GameGrid::removeCell(int x, int y)
 {
     gridPoints[x][y] = 0;
     auto it = gridCells.begin();

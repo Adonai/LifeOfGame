@@ -6,12 +6,16 @@
 #include <QThreadPool>
 
 #include "gamegrid.h"
+#include "celltemplateobject.h"
+
+class CellTemplateObject;
 
 class GameWidget : public QGLWidget
 {
     Q_OBJECT
 public:
     explicit GameWidget(QWidget *parent = 0);
+    void pasteObject(CellTemplateObject* obj, QPoint leftUpperEdge = QPoint());
 
 protected:
     void paintEvent(QPaintEvent *);

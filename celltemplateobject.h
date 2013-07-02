@@ -8,9 +8,11 @@ class CellTemplateObject
 {
 public:
     CellTemplateObject(QList<GameCell> cells);
-    void pasteObject(GameGrid* grid);
+    QListIterator<GameCell> getPainter() const;
 private:
+    void countBounds();
     QList<GameCell> templateCells;
+    int width, height;
 };
 
 #endif // CELLTEMPLATEOBJECT_H

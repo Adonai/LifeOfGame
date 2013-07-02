@@ -17,9 +17,9 @@ enum Team
 class GameCell
 {
 public:
-    GameCell(quint32 x, quint32 y, Team cell_team = TEAM_1);
-    quint32 x() const { return coordinates.x(); }
-    quint32 y() const { return coordinates.y(); }
+    GameCell(int x, int y, Team cell_team = TEAM_1);
+    int x() const { return coordinates.x(); }
+    int y() const { return coordinates.y(); }
     const QPoint getCoords() const { return coordinates; }
     bool isAlive() { return state == ALIVE; }
 private:

@@ -13,8 +13,6 @@ GameWidget::GameWidget(QWidget *parent) :
     QGLWidget(parent),
     timer(new QTimer(this)),
     universeSize(50),
-    cellGrid(this),
-    cellGridNext(this),
     cameraMode(false)
 {
     timer->setInterval(300);
@@ -29,6 +27,16 @@ GameWidget::GameWidget(QWidget *parent) :
     m_masterColor[8] = "#009";
 
     connect(timer, SIGNAL(timeout()), this, SLOT(newGeneration()));
+}
+
+void GameWidget::pasteObject(CellTemplateObject *obj, QPoint leftUpperEdge)
+{
+    auto iter = obj->getPainter();
+    while(iter.hasNext())
+    {
+        GameCell cur = iter.next();
+        cellGridNext.addCell(leftUpperEdge.x() + cur.x(), leftUpperEdge.y() + cur.y());
+    }
 }
 
 void GameWidget::startGame()
