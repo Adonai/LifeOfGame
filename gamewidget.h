@@ -2,8 +2,8 @@
 #define GAMEWIDGET_H
 
 #include <QColor>
-#include <QtOpenGL/QGLWidget>
 #include <QThreadPool>
+#include <QtOpenGL/QGLWidget>
 
 #include "gamegrid.h"
 #include "celltemplateobject.h"
@@ -23,6 +23,10 @@ protected:
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
     void wheelEvent(QWheelEvent *e);
+
+    void dragEnterEvent(QDragEnterEvent *e);
+    void dropEvent(QDropEvent *e);
+    void dragMoveEvent(QDragMoveEvent *e);
 
 signals:
     
@@ -49,7 +53,7 @@ private:
     GameGrid cellGrid;
     GameGrid cellGridNext;
 
-    QPoint edge, mousePos;
+    QPoint edge, mousePos, dropPos;
     bool cameraMode;
 
     quint8 checkPoint(quint32 x, quint32 y);

@@ -21,7 +21,13 @@ public:
     int x() const { return coordinates.x(); }
     int y() const { return coordinates.y(); }
     const QPoint getCoords() const { return coordinates; }
-    bool isAlive() { return state == ALIVE; }
+    bool isAlive() const { return state == ALIVE; }
+
+    bool operator ==(const GameCell &b) const
+    {
+        return coordinates == b.coordinates && team == b.team;
+    }
+
 private:
     LifeState state;
     Team team;

@@ -9,6 +9,8 @@ class CellTemplateObject
 public:
     CellTemplateObject(QList<GameCell> cells);
     QListIterator<GameCell> getPainter() const;
+    void addCell(GameCell gc) { templateCells.append(gc); countBounds(); }
+    void removeCell(GameCell gc) { templateCells.removeAll(gc); }
 private:
     void countBounds();
     QList<GameCell> templateCells;

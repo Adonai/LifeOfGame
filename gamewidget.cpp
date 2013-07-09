@@ -8,11 +8,11 @@
 #include <QFutureSynchronizer>
 
 #include "gamewidget.h"
+#include <QMimeData>
 
 GameWidget::GameWidget(QWidget *parent) :
     QGLWidget(parent),
     timer(new QTimer(this)),
-    universeSize(50),
     cameraMode(false)
 {
     timer->setInterval(300);
@@ -27,6 +27,7 @@ GameWidget::GameWidget(QWidget *parent) :
     m_masterColor[8] = "#009";
 
     connect(timer, SIGNAL(timeout()), this, SLOT(newGeneration()));
+    setAcceptDrops(true);
 }
 
 void GameWidget::pasteObject(CellTemplateObject *obj, QPoint leftUpperEdge)
@@ -35,8 +36,9 @@ void GameWidget::pasteObject(CellTemplateObject *obj, QPoint leftUpperEdge)
     while(iter.hasNext())
     {
         GameCell cur = iter.next();
-        cellGridNext.addCell(leftUpperEdge.x() + cur.x(), leftUpperEdge.y() + cur.y());
+        cellGrid.addCell(leftUpperEdge.x() + cur.x(), leftUpperEdge.y() + cur.y());
     }
+    update();
 }
 
 void GameWidget::startGame()
@@ -131,11 +133,9 @@ void GameWidget::processPart(quint32 start, quint32 end)
 
 void GameWidget::paintEvent(QPaintEvent *)
 {
-    qint64 current = QDateTime::currentDateTime().toMSecsSinceEpoch();
     QPainter p(this);
     paintGrid(p);
     paintUniverse(p);
-    qDebug() << QDateTime::currentDateTime().toMSecsSinceEpoch() - current;
 }
 
 void GameWidget::mousePressEvent(QMouseEvent *e)
@@ -201,6 +201,32 @@ void GameWidget::wheelEvent(QWheelEvent *)
 
 }
 
+void GameWidget::dragEnterEvent(QDragEnterEvent *e)
+{
+    if (e->mimeData()->hasFormat("text/pointer"))
+        e->acceptProposedAction();
+}
+
+void GameWidget::dropEvent(QDropEvent *e)
+{
+     qlonglong pointer = e->mimeData()->data("text/pointer").toLongLong();
+     CellTemplateObject* templateObject = (CellTemplateObject *)pointer;
+
+     double cellWidth = (double)width()/universeSize;
+     double cellHeight = (double)height()/universeSize;
+     int x = floor((dropPos.x() - edge.x())/cellWidth) + 1;
+     int y = floor((dropPos.y() - edge.y())/cellHeight) + 1;
+
+     pasteObject(templateObject, QPoint(x, y));
+
+     e->acceptProposedAction();
+}
+
+void GameWidget::dragMoveEvent(QDragMoveEvent *e)
+{
+    dropPos = e->pos();
+}
+
 void GameWidget::paintGrid(QPainter &p)
 {
     QRect borders(0, 0, width() - 1, height() - 1); // borders of the universe
@@ -208,9 +234,14 @@ void GameWidget::paintGrid(QPainter &p)
     gridColor.setAlpha(50); // must be lighter than main color
     p.setPen(gridColor);
     double cellWidth = (double)width()/universeSize; // width of the widget / number of cells at one row
+    while(cellWidth < 10)
+        cellWidth *= 10;
     for(double x = cellWidth; x + edge.x() <= width(); x += cellWidth)
         p.drawLine(x + edge.x(), 0, x + edge.x(), height());
+
     double cellHeight = (double)height()/universeSize; // height of the widget / number of cells at one row
+    while(cellHeight < 10)
+        cellHeight *= 10;
     for(double y = cellHeight; y + edge.y() <= height(); y += cellHeight)
         p.drawLine(0, y + edge.y(), width(), y + edge.y());
     p.drawRect(borders);
