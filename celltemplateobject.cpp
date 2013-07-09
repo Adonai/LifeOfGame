@@ -10,6 +10,15 @@ QListIterator<GameCell> CellTemplateObject::getPainter() const
     return QListIterator<GameCell>(templateCells);
 }
 
+const QByteArray CellTemplateObject::toByteArray() const
+{
+    QByteArray data;
+    for(GameCell cell : templateCells)
+        data.append(QString(cell.x()) + ";" + QString(cell.y()) + "#");
+
+    return data;
+}
+
 void CellTemplateObject::countBounds()
 {
     QPoint leftUp = templateCells.front().getCoords(), rightDown = templateCells.back().getCoords();

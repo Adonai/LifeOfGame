@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QColor>
+#include <QSettings>
 #include "gamewidget.h"
 
 namespace Ui {
@@ -24,6 +25,7 @@ private:
     Ui::MainWindow *ui;
     QColor currentColor;
     GameWidget* game;
+    QSettings settings;
 };
 
 #endif // MAINWINDOW_H

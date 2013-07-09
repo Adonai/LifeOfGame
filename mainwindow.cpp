@@ -34,6 +34,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    QList<GridTemplateButton *> buttons = ui->elements->findChildren<GridTemplateButton *>();
+    for(GridTemplateButton * curr : buttons)
+    {
+        settings.setValue(curr->objectName(), QVariant(curr->getCellTemplate()->toByteArray());
+    }
+    //for(QWidget : this->children());
     delete ui;
 }
 

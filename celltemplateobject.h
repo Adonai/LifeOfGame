@@ -11,6 +11,7 @@ public:
     QListIterator<GameCell> getPainter() const;
     void addCell(GameCell gc) { templateCells.append(gc); countBounds(); }
     void removeCell(GameCell gc) { templateCells.removeAll(gc); }
+    const QByteArray toByteArray() const;
 private:
     void countBounds();
     QList<GameCell> templateCells;
