@@ -13,7 +13,8 @@
 GameWidget::GameWidget(QWidget *parent) :
     QGLWidget(parent),
     timer(new QTimer(this)),
-    cameraMode(false)
+    cameraMode(false),
+    universeSize(50)
 {
     timer->setInterval(300);
     m_masterColor[0] = "#000";

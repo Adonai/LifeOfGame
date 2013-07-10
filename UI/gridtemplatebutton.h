@@ -12,7 +12,7 @@ public:
     ~GridTemplateButton();
 
     const CellTemplateObject* getCellTemplate() const { return templateObject; }
-    void setCellTemplate(CellTemplateObject* object) { templateObject = object; }
+    void setCellTemplate(CellTemplateObject* object) { delete templateObject; templateObject = object; }
 protected:
     void paintEvent(QPaintEvent *e);
     void mousePressEvent(QMouseEvent *e);

@@ -14,13 +14,32 @@ const QByteArray CellTemplateObject::toByteArray() const
 {
     QByteArray data;
     for(GameCell cell : templateCells)
-        data.append(QString(cell.x()) + ";" + QString(cell.y()) + "#");
+        data.append(QString::number(cell.x()) + ";" + QString::number(cell.y()) + "#");
 
     return data;
 }
 
+CellTemplateObject* CellTemplateObject::fromByteArray(QByteArray source)
+{
+    QList<GameCell> cells;
+    auto cellList = source.split('#');
+    for(QByteArray coords : cellList)
+    {
+        if(coords.isEmpty())
+            continue;
+
+        QList<QByteArray> point = coords.split(';');
+        cells.append(GameCell(point.at(0).toInt(), point.at(1).toInt()));
+    }
+
+    return new CellTemplateObject(cells);
+}
+
 void CellTemplateObject::countBounds()
 {
+    if(templateCells.isEmpty())
+        return; // do not count bounds for empty templates
+
     QPoint leftUp = templateCells.front().getCoords(), rightDown = templateCells.back().getCoords();
     for(GameCell cell : templateCells)
     {

@@ -12,6 +12,7 @@ public:
     void addCell(GameCell gc) { templateCells.append(gc); countBounds(); }
     void removeCell(GameCell gc) { templateCells.removeAll(gc); }
     const QByteArray toByteArray() const;
+    static CellTemplateObject* fromByteArray(QByteArray source);
 private:
     void countBounds();
     QList<GameCell> templateCells;

@@ -4,6 +4,8 @@
 #include <QColor>
 #include <QColorDialog>
 #include "mainwindow.h"
+#include "UI/gridtemplatebutton.h"
+
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -30,15 +32,30 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainLayout->setStretchFactor(ui->gameLayout, 8);
     ui->mainLayout->setStretchFactor(ui->setLayout, 2);
     ui->gameLayout->addWidget(game);
+
+    settings.beginGroup("templatebuttons");
+    for(QString name : settings.childKeys())
+    {
+        CellTemplateObject* newTemplate = CellTemplateObject::fromByteArray(settings.value(name).toByteArray());
+        GridTemplateButton* curr = new GridTemplateButton(ui->scrollAreaWidgetContents, newTemplate);
+        ui->scrollAreaWidgetContents->layout()->addWidget(curr);
+        curr->setMinimumSize(150, 150);
+        curr->setMaximumSize(150, 150);
+        curr->setObjectName(name);
+    }
+    settings.endGroup();
 }
 
 MainWindow::~MainWindow()
 {
     QList<GridTemplateButton *> buttons = ui->elements->findChildren<GridTemplateButton *>();
+    settings.beginGroup("templatebuttons");
     for(GridTemplateButton * curr : buttons)
     {
-        settings.setValue(curr->objectName(), QVariant(curr->getCellTemplate()->toByteArray());
+        settings.setValue(curr->objectName(), QVariant(curr->getCellTemplate()->toByteArray()));
     }
+    settings.endGroup();
+    settings.sync();
     //for(QWidget : this->children());
     delete ui;
 }

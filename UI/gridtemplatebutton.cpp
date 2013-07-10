@@ -31,7 +31,6 @@ void GridTemplateButton::paintEvent(QPaintEvent *e)
     QPainter p(this);
     paintGrid(p);
     paintUniverse(p);
-
 }
 
 void GridTemplateButton::mousePressEvent(QMouseEvent *e)
