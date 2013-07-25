@@ -28,7 +28,8 @@ HEADERS  += mainwindow.h \
     celltemplateobject.h \
     UI/gridtemplatebutton.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    templateform.ui
 
 OTHER_FILES += \
     README.markdown \

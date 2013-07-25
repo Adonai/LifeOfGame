@@ -212,32 +212,46 @@
               <property name="widgetResizable">
                <bool>true</bool>
               </property>
-              <widget class="QWidget" name="scrollAreaWidgetContents">
+              <widget class="QWidget" name="widget">
                <property name="geometry">
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>325</width>
-                 <height>286</height>
+                 <width>321</width>
+                 <height>246</height>
                 </rect>
                </property>
-               <layout class="QFormLayout" name="formLayout">
+               <layout class="QVBoxLayout" name="verticalLayout_3">
                 <property name="sizeConstraint">
                  <enum>QLayout::SetMinimumSize</enum>
                 </property>
-                <property name="fieldGrowthPolicy">
-                 <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                <property name="leftMargin">
+                 <number>5</number>
                 </property>
+                <property name="topMargin">
+                 <number>5</number>
+                </property>
+                <property name="rightMargin">
+                 <number>5</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>2</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="insertNewButton">
+                  <property name="text">
+                   <string>Insert new scheme</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QFormLayout" name="templateButtons"/>
+                </item>
                </layout>
               </widget>
              </widget>
             </item>
            </layout>
-          </widget>
-          <widget class="QWidget" name="tab">
-           <attribute name="title">
-            <string>Страница</string>
-           </attribute>
           </widget>
          </widget>
         </item>

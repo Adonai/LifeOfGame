@@ -8,15 +8,6 @@
 GridTemplateButton::GridTemplateButton(QWidget *parent, CellTemplateObject *object) :
     QPushButton(parent), templateObject(object)
 {
-    if(!templateObject)
-    {
-        QList<GameCell> defaultTemplate;
-        defaultTemplate.append(GameCell(1, 1));
-        defaultTemplate.append(GameCell(1, 2));
-        defaultTemplate.append(GameCell(2, 1));
-        defaultTemplate.append(GameCell(2, 2));
-        templateObject = new CellTemplateObject(defaultTemplate);
-    }
 
 }
 

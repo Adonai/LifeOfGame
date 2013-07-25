@@ -8,6 +8,7 @@
 
 namespace Ui {
 class MainWindow;
+class TemplateForm;
 }
 
 class MainWindow : public QMainWindow
@@ -20,9 +21,11 @@ public:
 
 public slots:
     void selectMasterColor();
+    void insertTemplateButton(CellTemplateObject* cellTemplate = new CellTemplateObject(QList<GameCell>()));
 
 private:
     Ui::MainWindow *ui;
+    Ui::TemplateForm * tf;
     QColor currentColor;
     GameWidget* game;
     QSettings settings;
