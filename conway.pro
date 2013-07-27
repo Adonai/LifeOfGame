@@ -19,14 +19,16 @@ SOURCES += main.cpp\
     gamecell.cpp \
     gamegrid.cpp \
     celltemplateobject.cpp \
-    UI/gridtemplatebutton.cpp
+    UI/gridtemplatebutton.cpp \
+    UI/gridtemplateform.cpp
 
 HEADERS  += mainwindow.h \
     gamewidget.h \
     gamecell.h \
     gamegrid.h \
     celltemplateobject.h \
-    UI/gridtemplatebutton.h
+    UI/gridtemplatebutton.h \
+    UI/gridtemplateform.h
 
 FORMS    += mainwindow.ui \
     templateform.ui

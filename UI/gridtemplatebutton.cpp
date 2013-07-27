@@ -6,9 +6,9 @@
 #define buttonCellSize 40
 
 GridTemplateButton::GridTemplateButton(QWidget *parent, CellTemplateObject *object) :
-    QPushButton(parent), templateObject(object)
+    QPushButton(parent), templateObject(object), editable(false)
 {
-
+    apply();
 }
 
 GridTemplateButton::~GridTemplateButton()
@@ -26,7 +26,7 @@ void GridTemplateButton::paintEvent(QPaintEvent *e)
 
 void GridTemplateButton::mousePressEvent(QMouseEvent *e)
 {
-    if(e->buttons() == Qt::RightButton)
+    if(e->buttons() == Qt::RightButton && editable)
     {
         QPushButton::mousePressEvent(e);
 
@@ -68,6 +68,9 @@ void GridTemplateButton::paintGrid(QPainter &p)
 
 void GridTemplateButton::paintUniverse(QPainter &p)
 {
+    if(!templateObject)
+        return;
+
     double cellWidth = (double)width()/buttonCellSize;
     double cellHeight = (double)height()/buttonCellSize;
     auto iter = templateObject->getPainter();
@@ -79,4 +82,19 @@ void GridTemplateButton::paintUniverse(QPainter &p)
         QRectF r(10 + left, 10 + top, (qreal)cellWidth, (qreal)cellHeight);
         p.fillRect(r, QBrush("#000")); // fill cell with brush of main color
     }
+}
+
+void GridTemplateButton::edit()
+{
+    editable = true;
+    setMinimumSize(150, 150);
+    setMaximumSize(150, 150);
+}
+
+
+void GridTemplateButton::apply()
+{
+    editable = false;
+    setMinimumSize(50, 50);
+    setMaximumSize(50, 50);
 }

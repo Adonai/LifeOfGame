@@ -19,12 +19,15 @@ protected:
 
 private:
     CellTemplateObject* templateObject;
+    bool editable;
 
 signals:
     
 private slots:
     void paintGrid(QPainter &p);
     void paintUniverse(QPainter &p);
+    void edit();
+    void apply();
     
 };
 

@@ -8,7 +8,6 @@
 
 namespace Ui {
 class MainWindow;
-class TemplateForm;
 }
 
 class MainWindow : public QMainWindow
@@ -25,7 +24,6 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    Ui::TemplateForm * tf;
     QColor currentColor;
     GameWidget* game;
     QSettings settings;
